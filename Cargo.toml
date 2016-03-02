@@ -7,4 +7,4 @@ authors = ["Aleh Zasypkin <azasypkin@mozilla.com>"]
 docopt = "0.6.78"
 docopt_macros = "0.6.81"
 rustc-serialize = "0.3"
-multicast_dns = { git = "https://github.com/fxbox/multicast-dns.git", rev = "6862fa4" }
+multicast_dns = { git = "https://github.com/fxbox/multicast-dns.git", rev = "dab2eb6" }

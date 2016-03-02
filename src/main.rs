@@ -23,6 +23,8 @@ Options:
 fn main() {
     let args: Args = Args::docopt().decode().unwrap_or_else(|e| e.exit());
 
+    let empty_string = "".to_owned();
+
     if args.flag_type.is_some() {
         let discovery_manager = DiscoveryManager::new();
 
@@ -30,22 +32,25 @@ fn main() {
             println!("=   {}   {:?}   {}   {}   {}",
                      service.interface,
                      service.protocol,
-                     service.name.as_ref().unwrap(),
-                     service.type_name.as_ref().unwrap(),
-                     service.domain.as_ref().unwrap());
-            println!("    hostname = [{}]", service.host_name.as_ref().unwrap());
-            println!("    address = [{}]", service.address.as_ref().unwrap());
+                     service.name.as_ref().unwrap_or(&empty_string),
+                     service.type_name.as_ref().unwrap_or(&empty_string),
+                     service.domain.as_ref().unwrap_or(&empty_string));
+            println!("    hostname = [{}]",
+                     service.host_name.as_ref().unwrap_or(&empty_string));
+            println!("    address = [{}]",
+                     service.address.as_ref().unwrap_or(&empty_string));
             println!("    port = [{}]", service.port);
-            println!("    txt = [{}]", service.txt.as_ref().unwrap());
+            println!("    txt = [{}]",
+                     service.txt.as_ref().unwrap_or(&empty_string));
         };
 
         let on_service_discovered = |service: ServiceInfo| {
             println!("+   {}   {:?}   {}   {}   {}",
                      service.interface,
                      service.protocol,
-                     service.name.as_ref().unwrap(),
-                     service.type_name.as_ref().unwrap(),
-                     service.domain.as_ref().unwrap());
+                     service.name.as_ref().unwrap_or(&empty_string),
+                     service.type_name.as_ref().unwrap_or(&empty_string),
+                     service.domain.as_ref().unwrap_or(&empty_string));
 
             discovery_manager.resolve_service(service,
                                               ResolveListeners {
@@ -54,7 +59,8 @@ fn main() {
         };
 
         let on_all_services_discovered = || {
-            println!("All services has been discovered");
+            println!("All services has been discovered. Stopping discovery...");
+            discovery_manager.stop_service_discovery();
         };
 
         let discovery_listeners = DiscoveryListeners {
