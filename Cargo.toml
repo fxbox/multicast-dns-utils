@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Aleh Zasypkin <azasypkin@mozilla.com>"]
 
 [dependencies]
-docopt = "0.6.78"
-docopt_macros = "0.6.81"
-rustc-serialize = "0.3"
-multicast_dns = { git = "https://github.com/fxbox/multicast-dns.git", rev = "7dc5720" }
+docopt = "0.6.80"
+docopt_macros = "0.6.83"
+rustc-serialize = "0.3.19"
+multicast_dns = { git = "https://github.com/fxbox/multicast-dns.git", rev = "b9a0740" }
