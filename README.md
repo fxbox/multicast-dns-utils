@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/fxbox/multicast-dns.svg?branch=master)](https://travis-ci.org/fxbox/multicast-dns-utils)
 
-Helper tool for Rust [Multicast DNS](https://github.com/fxbox/multicast-dns-utils) crate.
+Helper tool for Rust [Multicast DNS](https://github.com/fxbox/multicast-dns) crate.
 
 Examples:
 
