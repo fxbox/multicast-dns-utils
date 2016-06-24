@@ -59,7 +59,6 @@ fn main() {
         };
 
         let on_all_services_discovered = || {
-            println!("All services has been discovered. Stopping discovery...");
             discovery_manager.stop_service_discovery();
         };
 
@@ -68,17 +67,24 @@ fn main() {
             on_all_discovered: Some(&on_all_services_discovered),
         };
 
-        discovery_manager.discover_services(&args.flag_type.unwrap(), discovery_listeners);
+        match discovery_manager.discover_services(&args.flag_type.unwrap(), discovery_listeners) {
+            Ok(_) => println!("All services has been discovered. Stopping discovery..."),
+            Err(err) => println!("\x1B[31m{}\x1B[0m", err),
+        }
     }
 
     if args.flag_name.is_some() {
         let host_manager = HostManager::new();
         let new_host_name = args.flag_name.unwrap();
 
-        println!("Hostname update ({} -> {}) is requested",
-                 host_manager.get_name(),
-                 &new_host_name);
-        println!("New Host name: {:?}", host_manager.set_name(&new_host_name));
+        match host_manager.get_name()
+            .and_then(|current_name| {
+                println!("Hostname update ({} -> {}) is requested", current_name, &new_host_name);
+                host_manager.set_name(&new_host_name)
+            }) {
+                Ok(new_name) => println!("New Host name: {:?}", new_name),
+                Err(err) => println!("\x1B[31m{}\x1B[0m", err),
+            }
     }
 
     if args.flag_alias.is_some() {
@@ -87,11 +93,13 @@ fn main() {
 
         println!("New alias ({}) is requested", &new_alias);
 
-        host_manager.add_name_alias(&new_alias);
-
-        println!("New alias \"{}\" is active until program is terminated.",
-                 new_alias);
-
-        loop {}
+        match host_manager.add_name_alias(&new_alias) {
+            Ok(_) => {
+                println!("New alias \"{}\" is active until program is terminated.",
+                         new_alias);
+                loop {}
+            },
+            Err(err) => println!("\x1B[31m{}\x1B[0m", err),
+        }
     }
 }
