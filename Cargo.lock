@@ -4,7 +4,7 @@ version = "0.2.0"
 dependencies = [
  "docopt 0.6.81 (registry+https://github.com/rust-lang/crates.io-index)",
  "docopt_macros 0.6.84 (registry+https://github.com/rust-lang/crates.io-index)",
- "multicast_dns 0.2.0 (git+https://github.com/fxbox/multicast-dns.git?rev=d8b6c0c)",
+ "multicast_dns 0.2.0 (git+https://github.com/fxbox/multicast-dns.git?rev=564eff5)",
  "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -64,7 +64,7 @@ dependencies = [
 [[package]]
 name = "multicast_dns"
 version = "0.2.0"
-source = "git+https://github.com/fxbox/multicast-dns.git?rev=d8b6c0c#d8b6c0ce133f0ccff5084bf1d16b037d60d1873f"
+source = "git+https://github.com/fxbox/multicast-dns.git?rev=564eff5#564eff5c810af634dc476f3cd2025fa76007c758"
 dependencies = [
  "libc 0.2.13 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
