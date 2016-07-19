@@ -5,6 +5,6 @@ authors = ["Aleh Zasypkin <azasypkin@mozilla.com>"]
 
 [dependencies]
 docopt = "0.6.81"
-docopt_macros = "0.6.84"
+docopt_macros = "0.6.85"
 rustc-serialize = "0.3.19"
-multicast_dns = { git = "https://github.com/fxbox/multicast-dns.git", rev = "564eff5" }
+multicast_dns = { git = "https://github.com/fxbox/multicast-dns.git", branch = "master" }
