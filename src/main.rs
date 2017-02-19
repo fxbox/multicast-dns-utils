@@ -1,27 +1,33 @@
-#![feature(plugin)]
-#![plugin(docopt_macros)]
-
 extern crate docopt;
 extern crate rustc_serialize;
 extern crate multicast_dns;
 
+use docopt::Docopt;
+
 use multicast_dns::host::HostManager;
 use multicast_dns::discovery::discovery_manager::*;
 
-docopt!(Args derive Debug, "
+const USAGE: &'static str = "
 Usage: multicast-dns-utils [-t <type>] [-n <hostname>] [-a <alias>]
 
 Options:
     -t, --type <type>       Look for service of the specified type (e.g. _device-info._tcp).
     -n, --name <hostname>   Set custom host name.
     -a, --alias <alias>     Set custom host name alias.
-",
-        flag_type: Option<String>,
-        flag_name: Option<String>,
-        flag_alias: Option<String>);
+";
+
+#[derive(Debug, RustcDecodable)]
+struct Args {
+    flag_type: Option<String>,
+    flag_name: Option<String>,
+    flag_alias: Option<String>,
+}
+
 
 fn main() {
-    let args: Args = Args::docopt().decode().unwrap_or_else(|e| e.exit());
+    let args: Args = Docopt::new(USAGE)
+        .and_then(|d| d.decode())
+        .unwrap_or_else(|e| e.exit());
 
     let empty_string = "".to_owned();
 
