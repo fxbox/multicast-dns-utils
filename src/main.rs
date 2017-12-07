@@ -1,6 +1,8 @@
 extern crate docopt;
-extern crate rustc_serialize;
 extern crate multicast_dns;
+extern crate serde;
+#[macro_use]
+extern crate serde_derive;
 
 use docopt::Docopt;
 
@@ -16,7 +18,7 @@ Options:
     -a, --alias <alias>     Set custom host name alias.
 ";
 
-#[derive(Debug, RustcDecodable)]
+#[derive(Debug, Deserialize)]
 struct Args {
     flag_type: Option<String>,
     flag_name: Option<String>,
@@ -26,7 +28,7 @@ struct Args {
 
 fn main() {
     let args: Args = Docopt::new(USAGE)
-        .and_then(|d| d.decode())
+        .and_then(|d| d.deserialize())
         .unwrap_or_else(|e| e.exit());
 
     let empty_string = "".to_owned();
