@@ -1,10 +1,10 @@
 [package]
 name = "multicast-dns-utils"
-version = "0.3.0"
+version = "0.4.1"
 authors = ["Aleh Zasypkin <aleh.zasypkin@gmail.com>"]
 
 [dependencies]
-docopt = "0.8.1"
-serde = "1.0.23"
-serde_derive = "1.0.23"
+docopt = "1.0.2"
+serde = "1.0.80"
+serde_derive = "1.0.80"
 multicast_dns = { git = "https://github.com/fxbox/multicast-dns.git", branch = "master" }

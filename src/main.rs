@@ -6,10 +6,10 @@ extern crate serde_derive;
 
 use docopt::Docopt;
 
-use multicast_dns::host::HostManager;
 use multicast_dns::discovery::discovery_manager::*;
+use multicast_dns::host::HostManager;
 
-const USAGE: &'static str = "
+const USAGE: &str = "
 Usage: multicast-dns-utils [-t <type>] [-n <hostname>] [-a <alias>]
 
 Options:
@@ -25,7 +25,6 @@ struct Args {
     flag_alias: Option<String>,
 }
 
-
 fn main() {
     let args: Args = Docopt::new(USAGE)
         .and_then(|d| d.deserialize())
@@ -37,33 +36,45 @@ fn main() {
         let discovery_manager = DiscoveryManager::new();
 
         let on_service_resolved = |service: ServiceInfo| {
-            println!("=   {}   {:?}   {}   {}   {}",
-                     service.interface,
-                     service.protocol,
-                     service.name.as_ref().unwrap_or(&empty_string),
-                     service.type_name.as_ref().unwrap_or(&empty_string),
-                     service.domain.as_ref().unwrap_or(&empty_string));
-            println!("    hostname = [{}]",
-                     service.host_name.as_ref().unwrap_or(&empty_string));
-            println!("    address = [{}]",
-                     service.address.as_ref().unwrap_or(&empty_string));
+            println!(
+                "=   {}   {:?}   {}   {}   {}",
+                service.interface,
+                service.protocol,
+                service.name.as_ref().unwrap_or(&empty_string),
+                service.type_name.as_ref().unwrap_or(&empty_string),
+                service.domain.as_ref().unwrap_or(&empty_string)
+            );
+            println!(
+                "    hostname = [{}]",
+                service.host_name.as_ref().unwrap_or(&empty_string)
+            );
+            println!(
+                "    address = [{}]",
+                service.address.as_ref().unwrap_or(&empty_string)
+            );
             println!("    port = [{}]", service.port);
-            println!("    txt = [{}]",
-                     service.txt.as_ref().unwrap_or(&empty_string));
+            println!(
+                "    txt = [{}]",
+                service.txt.as_ref().unwrap_or(&empty_string)
+            );
         };
 
         let on_service_discovered = |service: ServiceInfo| {
-            println!("+   {}   {:?}   {}   {}   {}",
-                     service.interface,
-                     service.protocol,
-                     service.name.as_ref().unwrap_or(&empty_string),
-                     service.type_name.as_ref().unwrap_or(&empty_string),
-                     service.domain.as_ref().unwrap_or(&empty_string));
+            println!(
+                "+   {}   {:?}   {}   {}   {}",
+                service.interface,
+                service.protocol,
+                service.name.as_ref().unwrap_or(&empty_string),
+                service.type_name.as_ref().unwrap_or(&empty_string),
+                service.domain.as_ref().unwrap_or(&empty_string)
+            );
 
-            discovery_manager.resolve_service(service,
-                                              ResolveListeners {
-                                                  on_service_resolved: Some(&on_service_resolved),
-                                              });
+            discovery_manager.resolve_service(
+                service,
+                ResolveListeners {
+                    on_service_resolved: Some(&on_service_resolved),
+                },
+            );
         };
 
         let on_all_services_discovered = || {
@@ -85,14 +96,16 @@ fn main() {
         let host_manager = HostManager::new();
         let new_host_name = args.flag_name.unwrap();
 
-        match host_manager.get_name()
-            .and_then(|current_name| {
-                println!("Hostname update ({} -> {}) is requested", current_name, &new_host_name);
-                host_manager.set_name(&new_host_name)
-            }) {
-                Ok(new_name) => println!("New Host name: {:?}", new_name),
-                Err(err) => println!("\x1B[31m{}\x1B[0m", err),
-            }
+        match host_manager.get_name().and_then(|current_name| {
+            println!(
+                "Hostname update ({} -> {}) is requested",
+                current_name, &new_host_name
+            );
+            host_manager.set_name(&new_host_name)
+        }) {
+            Ok(new_name) => println!("New Host name: {:?}", new_name),
+            Err(err) => println!("\x1B[31m{}\x1B[0m", err),
+        }
     }
 
     if args.flag_alias.is_some() {
@@ -103,10 +116,15 @@ fn main() {
 
         match host_manager.add_name_alias(&new_alias) {
             Ok(_) => {
-                println!("New alias \"{}\" is active until program is terminated.",
-                         new_alias);
-                loop {}
-            },
+                println!(
+                    "New alias \"{}\" is active until program is terminated.",
+                    new_alias
+                );
+
+                loop {
+                    std::thread::sleep(std::time::Duration::from_secs(1));
+                }
+            }
             Err(err) => println!("\x1B[31m{}\x1B[0m", err),
         }
     }
